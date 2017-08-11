@@ -41,15 +41,16 @@ describe Oystercard do
     expect(subject.in_journey?).to eq 'not in use'
   end
 
-  let(:station) { double :station }
+  # let(:station) { double :station }
   it 'can record touch in station' do
     subject.top_up(5)
-    # station = Station.new("Paddington")
-    allow(station).to receive_messages(name: "Paddington", zone: 1)
+    station = Station.new("Paddington", 1)
+    # allow(station).to receive_messages(name: "Paddington", zone: 1)
     subject.touch_in(station)
-    expect(subject.journeys).to eq([{ in: "Paddington", zone: 1}])
+    expect(subject.journeys).to eq([{ in: station, out: nil }])
   end
 
+  let(:station) { double :station }
   it 'has an empty list of journeys by default' do 
     expect(subject.journeys).to eq []
   end

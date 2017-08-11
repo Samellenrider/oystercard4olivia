@@ -29,7 +29,8 @@ class Oystercard
 
   def in_journey?
     return 'not in use' if @journeys == []
-    return 'in use' if @journeys.last[:out] == "nil"
+    p @journeys.last[:in]
+    return 'in use' if @journeys.last[:in] != nil && @journeys.last[:out].nil?
     return 'not in use' if @journeys.last[:out] != nil
     # @journeys.last[:out] == @name
   end
@@ -40,16 +41,16 @@ class Oystercard
     #{MIN_BAL}" if @balance < MIN_BAL
     # @in_use = true
     puts "Card touched in."
-    @journeys << { in: station.name, zone: station.zone }
+    @journeys << { in: station, out: nil }
     # [@trip_no] taken out to add out station to the array
   end
 
   def touch_out(station)
-    @trip_no += 1
+    # @trip_no
     deduct(FARE_PER_TRIP)
     # @in_use = false
     puts "Card touched out. Remaining balance #{@balance}."
-    @journeys << { out: station.name, zone: station.zone }
+    @journeys.last[:out] = station
   end
 
 private
